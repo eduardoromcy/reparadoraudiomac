@@ -5,9 +5,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.URL;
 
 public class AudioTrayApp {
+
     private static Clip clip;
 
     public static void main(String[] args) {
@@ -55,23 +59,89 @@ public class AudioTrayApp {
     }
 
     public static void reiniciarAudioMacOS() {
+        String usuario = null;
+        String senha = null;
         try {
+            File config =
+                    new File("config.ini");
+            if (config.exists()) {
+                try (
+                        BufferedReader br =
+                             new BufferedReader(
+                                     new FileReader(config))) {
+                    usuario = br.readLine();
+                    senha = br.readLine();
+                }
+            }
+            boolean executouComSenha =
+                    executarComUsuarioSenha(
+                            usuario,
+                            senha
+                    );
+            if (!executouComSenha) {
+                System.out.println(
+                        "Falhou com usuário/senha. Tentando fallback..."
+                );
+                executarFallback();
+            }
+            // Espera o macOS subir o áudio novamente
+            Thread.sleep(3000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean executarComUsuarioSenha(
+            String usuario,
+            String senha
+    ) {
+        try {
+            if (usuario == null || senha == null) {
+                return false;
+            }
             String script =
-                    "do shell script \"killall coreaudiod\" " +
+                    "do shell script " +
+                            "\"sudo killall coreaudiod\" " +
+                            "user name \"" + usuario + "\" " +
+                            "password \"" + senha + "\" " +
                             "with administrator privileges";
-            ProcessBuilder pb = new ProcessBuilder(
-                    "osascript",
-                    "-e",
-                    script
-            );
+            ProcessBuilder pb =
+                    new ProcessBuilder(
+                            "osascript",
+                            "-e",
+                            script
+                    );
             Process process = pb.start();
             int exitCode = process.waitFor();
             System.out.println(
-                    "coreaudiod reiniciado. Exit code: " +
-                            exitCode
+                    "Execução com usuário/senha. Exit code: "
+                            + exitCode
             );
-            // Espera o macOS subir o áudio novamente
-            Thread.sleep(3000);
+            return exitCode == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static void executarFallback() {
+        try {
+            String script =
+                    "do shell script " +
+                            "\"killall coreaudiod\" " +
+                            "with administrator privileges";
+            ProcessBuilder pb =
+                    new ProcessBuilder(
+                            "osascript",
+                            "-e",
+                            script
+                    );
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+            System.out.println(
+                    "Fallback executado. Exit code: "
+                            + exitCode
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,7 +170,9 @@ public class AudioTrayApp {
             });
             sair.addActionListener(e -> {
                 pararAudio();
-                tray.remove(tray.getTrayIcons()[0]);
+                tray.remove(
+                        tray.getTrayIcons()[0]
+                );
                 System.exit(0);
             });
             popup.add(reiniciar);
@@ -127,8 +199,9 @@ public class AudioTrayApp {
                         16,
                         BufferedImage.TYPE_INT_ARGB
                 );
-        Graphics2D g = image.createGraphics();
-        g.setColor(Color.ORANGE);
+        Graphics2D g =
+                image.createGraphics();
+        g.setColor(Color.MAGENTA);
         g.fillOval(2, 2, 12, 12);
         g.dispose();
         return image;
