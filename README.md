@@ -1,9 +1,10 @@
 # Reparador de áudio para macOS.
-Se eu conseguir ajudar pelo menos uma pessoa, estarei satisfeito.
-No meu caso, o macOS consegue emitir som somente 1 vez e após inatividade fica "mudo" e para de sair som, talvez por falha de hardware.
+Se isto ajudar pelo menos uma pessoa, estarei satisfeito.
+
+No meu caso, o macOS conseguia emitir som somente 1 vez e após breve inatividade ficava "mudo" e parava reproduzir sons, talvez por falha de hardware, mas voltava a funcionar se eu abaixasse a tela e levantasse novamente ou reiniciando o sistema.
 Tive a ideia de criar um aplicativo para ficar "reproduzindo" infinitamente um arquivo de som vazio, mantendo assim o serviço de áudio sempre em ativiade.
 
-Como gerar os executáveis no macOS:
+Abaixo estão as instruções de como gerar os "executáveis" no macOS.
 
 ## Instalar o brew (https://brew.sh):
 ````
@@ -15,7 +16,7 @@ Como gerar os executáveis no macOS:
 brew install jpackage
 ````
 
-## Gerar arquivo JAR
+## Gerar arquivo JAR no intelliJ:
 #### No lado direito:
 Abra a aba Maven
 #### Expanda:
@@ -23,7 +24,8 @@ Lifecycle
 #### Dê duplo clique em:
 package
 
-## Gerar arquivo APP
+## Gerar arquivo APP via terminal:
+#### Entrar na pasta target e rodar o comando abaixo.
 ````
 jpackage \
 --name RepararAudioApp \
@@ -34,7 +36,8 @@ jpackage \
 --icon classes/RepararAudioApp.icns
 ````
 
-## Gerar arquivo DMG
+## Gerar arquivo DMG via terminal:
+#### Entrar na pasta target e rodar o comando abaixo.
 ````
 jpackage \
 --name RepararAudioApp \
