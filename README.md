@@ -19,7 +19,7 @@ jpackage \
 --name RepararAudioApp \
 --input . \
 --main-class br.com.ersys.AudioTrayApp \
---main-jar app.jar \
+--main-jar RepararAudioApp-1.1.jar \
 --type app-image
 ````
 
@@ -29,6 +29,6 @@ jpackage \
 --name RepararAudioApp \
 --input . \
 --main-class br.com.ersys.AudioTrayApp \
---main-jar app.jar \
+--main-jar RepararAudioApp-1.1.jar \
 --type dmg
 ````
