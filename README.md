@@ -5,17 +5,17 @@ Tive a ideia de criar um aplicativo para ficar "reproduzindo" infinitamente um a
 
 Como gerar os executáveis no macOS:
 
-Instalar o brew (https://brew.sh):
+## Instalar o brew (https://brew.sh):
 ````
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ````
 
-Instar o jpackage:
+## Instalar o jpackage (https://dev.java/learn/jvm/tool/jpackage/):
 ````
-brew install package
+brew install jpackage
 ````
 
-## JAR
+## Gerar arquivo JAR
 #### No lado direito:
 Abra a aba Maven
 #### Expanda:
@@ -23,7 +23,7 @@ Lifecycle
 #### Dê duplo clique em:
 package
 
-## APP
+## Gerar arquivo APP
 ````
 jpackage \
 --name RepararAudioApp \
@@ -34,7 +34,7 @@ jpackage \
 --icon classes/RepararAudioApp.icns
 ````
 
-## DMG
+## Gerar arquivo DMG
 ````
 jpackage \
 --name RepararAudioApp \
