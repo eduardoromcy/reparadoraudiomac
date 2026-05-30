@@ -1,7 +1,7 @@
 # Reparador de áudio para macOS.
-Se eu conseguir ajudar pelo menos alguma pessoa além de mim, estarei satisfeito.
-No meu caso, o macOS consegue emitir som somente 1 vez e por inatividade, talvez por falha de hardware, para de sair som.
-Tive a ideia de colocar um aplicativo para ficar "tocando" infinitamente um arquivo de som vazio, mantendo assim o serviço de áudio sempre em ativiade.
+Se eu conseguir ajudar pelo menos uma pessoa, estarei satisfeito.
+No meu caso, o macOS consegue emitir som mas somente 1 vez e após inatividade fica "mudo" e para de sair som, talvez por falha de hardware.
+Tive a ideia de criar um aplicativo para ficar "reproduzindo" infinitamente um arquivo de som vazio, mantendo assim o serviço de áudio sempre em ativiade.
 
 Como gerar os executáveis no macOS:
 

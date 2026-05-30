@@ -62,8 +62,7 @@ public class AudioTrayApp {
         String usuario = null;
         String senha = null;
         try {
-            File config =
-                    new File("config.ini");
+            File config = getConfigFile();
             if (config.exists()) {
                 try (
                         BufferedReader br =
@@ -201,10 +200,30 @@ public class AudioTrayApp {
                 );
         Graphics2D g =
                 image.createGraphics();
-        g.setColor(Color.MAGENTA);
+        g.setColor(Color.DARK_GRAY);
         g.fillOval(2, 2, 12, 12);
         g.dispose();
         return image;
+    }
+
+    private static File getConfigFile() throws Exception {
+        String executablePath =
+                new File(
+                        AudioTrayApp.class
+                                .getProtectionDomain()
+                                .getCodeSource()
+                                .getLocation()
+                                .toURI()
+                ).getAbsolutePath();
+        File jarFile = new File(executablePath);
+        File appDir = jarFile
+                .getParentFile()      // app
+                .getParentFile()      // Contents
+                .getParentFile();     // RepararAudioApp.app
+        return new File(
+                appDir.getParentFile(),
+                "config.ini"
+        );
     }
 
 }
