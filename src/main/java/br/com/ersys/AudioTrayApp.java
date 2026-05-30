@@ -141,8 +141,15 @@ public class AudioTrayApp {
                     "Fallback executado. Exit code: "
                             + exitCode
             );
+            if (exitCode == 1) {
+                System.err.println(
+                        "Falha por falta de privilégios para reiniciar o servi;co de áudio. Encerrando aplicação."
+                );
+                System.exit(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
