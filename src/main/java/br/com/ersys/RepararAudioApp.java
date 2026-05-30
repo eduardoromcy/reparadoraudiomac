@@ -4,20 +4,19 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 
-public class AudioTrayApp {
+public class RepararAudioApp {
 
     private static Clip clip;
 
-    public static void main(String[] args) {
+    static void main() {
         // Esconde do Dock
         System.setProperty("apple.awt.UIElement", "true");
-        reiniciarAudioMacOS();
+        reiniciarAudioGeralMacOS();
         tocarAudioLoop();
         iniciarTray();
     }
@@ -37,7 +36,7 @@ public class AudioTrayApp {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação " + e);
         }
     }
 
@@ -48,17 +47,17 @@ public class AudioTrayApp {
                 clip.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação " + e);
         }
     }
 
     public static void reiniciarAudio() {
         pararAudio();
-        reiniciarAudioMacOS();
+        reiniciarAudioGeralMacOS();
         tocarAudioLoop();
     }
 
-    public static void reiniciarAudioMacOS() {
+    public static void reiniciarAudioGeralMacOS() {
         String usuario = null;
         String senha = null;
         try {
@@ -66,8 +65,8 @@ public class AudioTrayApp {
             if (config.exists()) {
                 try (
                         BufferedReader br =
-                             new BufferedReader(
-                                     new FileReader(config))) {
+                                new BufferedReader(
+                                        new FileReader(config))) {
                     usuario = br.readLine();
                     senha = br.readLine();
                 }
@@ -86,7 +85,7 @@ public class AudioTrayApp {
             // Espera o macOS subir o áudio novamente
             Thread.sleep(3000);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação " + e);
         }
     }
 
@@ -110,15 +109,14 @@ public class AudioTrayApp {
                             "-e",
                             script
                     );
-            Process process = pb.start();
-            int exitCode = process.waitFor();
-            System.out.println(
-                    "Execução com usuário/senha. Exit code: "
-                            + exitCode
-            );
+            int exitCode;
+            try (Process process = pb.start()) {
+                exitCode = process.waitFor();
+            }
+            System.out.println("Execução com usuário/senha. Exit code: " + exitCode);
             return exitCode == 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação" + e);
             return false;
         }
     }
@@ -135,20 +133,19 @@ public class AudioTrayApp {
                             "-e",
                             script
                     );
-            Process process = pb.start();
-            int exitCode = process.waitFor();
-            System.out.println(
-                    "Fallback executado. Exit code: "
-                            + exitCode
-            );
+            int exitCode;
+            try (Process process = pb.start()) {
+                exitCode = process.waitFor();
+            }
+            System.out.println("Fallback executado. Exit code: " + exitCode);
             if (exitCode == 1) {
-                System.err.println(
+                System.out.println(
                         "Falha por falta de privilégios para reiniciar o servi;co de áudio. Encerrando aplicação."
                 );
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação" + e);
             System.exit(1);
         }
     }
@@ -194,21 +191,21 @@ public class AudioTrayApp {
             trayIcon.setImageAutoSize(true);
             tray.add(trayIcon);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro na aplicação" + e);
         }
     }
 
     private static Image criarIcone() {
         return Toolkit.getDefaultToolkit()
                 .getImage(
-                        AudioTrayApp.class.getResource("/RepararAudioApp.png")
+                        RepararAudioApp.class.getResource("/RepararAudioApp.png")
                 );
     }
 
     private static File getConfigFile() throws Exception {
         String executablePath =
                 new File(
-                        AudioTrayApp.class
+                        RepararAudioApp.class
                                 .getProtectionDomain()
                                 .getCodeSource()
                                 .getLocation()

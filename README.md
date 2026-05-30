@@ -1,11 +1,19 @@
 # Reparador de áudio para macOS.
 Se eu conseguir ajudar pelo menos uma pessoa, estarei satisfeito.
-No meu caso, o macOS consegue emitir som mas somente 1 vez e após inatividade fica "mudo" e para de sair som, talvez por falha de hardware.
+No meu caso, o macOS consegue emitir som somente 1 vez e após inatividade fica "mudo" e para de sair som, talvez por falha de hardware.
 Tive a ideia de criar um aplicativo para ficar "reproduzindo" infinitamente um arquivo de som vazio, mantendo assim o serviço de áudio sempre em ativiade.
 
 Como gerar os executáveis no macOS:
 
-Instalar o brew e o jpackage antes!
+Instalar o brew (https://brew.sh):
+````
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+````
+
+Instar o jpackage:
+````
+brew install package
+````
 
 ## JAR
 #### No lado direito:
@@ -20,10 +28,10 @@ package
 jpackage \
 --name RepararAudioApp \
 --input . \
---main-class br.com.ersys.AudioTrayApp \
---main-jar RepararAudioApp-1.1.jar \
+--main-class br.com.ersys.RepararAudioApp \
+--main-jar RepararAudioApp-1.2.jar \
 --type app-image \
---icon RepararAudioApp.icns
+--icon classes/RepararAudioApp.icns
 ````
 
 ## DMG
@@ -31,8 +39,8 @@ jpackage \
 jpackage \
 --name RepararAudioApp \
 --input . \
---main-class br.com.ersys.AudioTrayApp \
---main-jar RepararAudioApp-1.1.jar \
+--main-class br.com.ersys.RepararAudioApp \
+--main-jar RepararAudioApp-1.2.jar \
 --type dmg \
---icon RepararAudioApp.icns
+--icon classes/RepararAudioApp.icns
 ````
