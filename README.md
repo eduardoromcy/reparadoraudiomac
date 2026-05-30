@@ -5,6 +5,8 @@ Tive a ideia de criar um aplicativo para ficar "reproduzindo" infinitamente um a
 
 Como gerar os executáveis no macOS:
 
+Instalar o brew e o jpackage antes!
+
 ## JAR
 #### No lado direito:
 Abra a aba Maven
@@ -20,7 +22,8 @@ jpackage \
 --input . \
 --main-class br.com.ersys.AudioTrayApp \
 --main-jar RepararAudioApp-1.1.jar \
---type app-image
+--type app-image \
+--icon RepararAudioApp.icns
 ````
 
 ## DMG
@@ -30,5 +33,6 @@ jpackage \
 --input . \
 --main-class br.com.ersys.AudioTrayApp \
 --main-jar RepararAudioApp-1.1.jar \
---type dmg
+--type dmg \
+--icon RepararAudioApp.icns
 ````

@@ -199,18 +199,10 @@ public class AudioTrayApp {
     }
 
     private static Image criarIcone() {
-        BufferedImage image =
-                new BufferedImage(
-                        16,
-                        16,
-                        BufferedImage.TYPE_INT_ARGB
+        return Toolkit.getDefaultToolkit()
+                .getImage(
+                        AudioTrayApp.class.getResource("/RepararAudioApp.png")
                 );
-        Graphics2D g =
-                image.createGraphics();
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(2, 2, 12, 12);
-        g.dispose();
-        return image;
     }
 
     private static File getConfigFile() throws Exception {
