@@ -9,7 +9,7 @@ import java.io.File;
 
 public class GerarWavVazio {
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         // 1 segundo de silêncio
         byte[] silencio = new byte[44100 * 2];
         AudioFormat format = new AudioFormat(

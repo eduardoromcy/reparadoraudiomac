@@ -61,7 +61,7 @@ public class RepararAudioApp {
         String usuario = null;
         String senha = null;
         try {
-            File config = getConfigFile();
+            File config = pegarArquivoConfig();
             if (config.exists()) {
                 try (
                         BufferedReader br =
@@ -202,7 +202,7 @@ public class RepararAudioApp {
                 );
     }
 
-    private static File getConfigFile() throws Exception {
+    private static File pegarArquivoConfig() throws Exception {
         String executablePath =
                 new File(
                         RepararAudioApp.class
