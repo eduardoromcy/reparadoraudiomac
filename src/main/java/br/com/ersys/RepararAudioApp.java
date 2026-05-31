@@ -16,12 +16,12 @@ public class RepararAudioApp {
     static void main() {
         // Esconde do Dock
         System.setProperty("apple.awt.UIElement", "true");
-        reiniciarAudioGeralMacOS();
-        tocarAudioLoop();
-        iniciarTray();
+        reiniciarServicoAudioMacOS();
+        tocarSomLoop();
+        iniciarRepararAudioAppTray();
     }
 
-    public static void tocarAudioLoop() {
+    public static void tocarSomLoop() {
         try {
             URL url = Thread.currentThread()
                     .getContextClassLoader()
@@ -40,7 +40,7 @@ public class RepararAudioApp {
         }
     }
 
-    public static void pararAudio() {
+    public static void pararCorrecaoAudio() {
         try {
             if (clip != null) {
                 clip.stop();
@@ -51,13 +51,13 @@ public class RepararAudioApp {
         }
     }
 
-    public static void reiniciarAudio() {
-        pararAudio();
-        reiniciarAudioGeralMacOS();
-        tocarAudioLoop();
+    public static void reiniciarCorrecaoAudio() {
+        pararCorrecaoAudio();
+        reiniciarServicoAudioMacOS();
+        tocarSomLoop();
     }
 
-    public static void reiniciarAudioGeralMacOS() {
+    public static void reiniciarServicoAudioMacOS() {
         String usuario = null;
         String senha = null;
         try {
@@ -150,7 +150,7 @@ public class RepararAudioApp {
         }
     }
 
-    public static void iniciarTray() {
+    public static void iniciarRepararAudioAppTray() {
         if (!SystemTray.isSupported()) {
             return;
         }
@@ -160,19 +160,19 @@ public class RepararAudioApp {
             PopupMenu popup =
                     new PopupMenu();
             MenuItem reiniciar =
-                    new MenuItem("Reiniciar");
+                    new MenuItem("Reiniciar correção de áudio");
             MenuItem parar =
-                    new MenuItem("Parar");
+                    new MenuItem("Parar correção de áudio");
             MenuItem sair =
                     new MenuItem("Sair");
             reiniciar.addActionListener(e -> {
-                reiniciarAudio();
+                reiniciarCorrecaoAudio();
             });
             parar.addActionListener(e -> {
-                pararAudio();
+                pararCorrecaoAudio();
             });
             sair.addActionListener(e -> {
-                pararAudio();
+                pararCorrecaoAudio();
                 tray.remove(
                         tray.getTrayIcons()[0]
                 );
