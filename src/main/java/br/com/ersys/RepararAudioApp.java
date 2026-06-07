@@ -22,22 +22,27 @@ public class RepararAudioApp {
     }
 
     public static void tocarSomLoop() {
-        try {
-            URL url = Thread.currentThread()
-                    .getContextClassLoader()
-                    .getResource("audio/som.wav");
-            if (url == null) {
-                throw new RuntimeException("Arquivo não encontrado!");
+        Thread audioThread = new Thread(() -> {
+            try {
+                URL url = Thread.currentThread()
+                        .getContextClassLoader()
+                        .getResource("audio/som.wav");
+                if (url == null) {
+                    throw new RuntimeException("Arquivo não encontrado!");
+                }
+                AudioInputStream audioStream =
+                        AudioSystem.getAudioInputStream(url);
+                clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
+            } catch (Exception e) {
+                System.out.println("Erro na aplicação " + e);
             }
-            AudioInputStream audioStream =
-                    AudioSystem.getAudioInputStream(url);
-            clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-        } catch (Exception e) {
-            System.out.println("Erro na aplicação " + e);
-        }
+        });
+        audioThread.setPriority(Thread.MIN_PRIORITY); // prioridade 1
+        audioThread.setDaemon(true);                  // opcional
+        audioThread.start();
     }
 
     public static void pararCorrecaoAudio() {
@@ -99,7 +104,9 @@ public class RepararAudioApp {
             }
             String script =
                     "do shell script " +
-                            "\"sudo killall coreaudiod\" " +
+                            "\"sudo killall coreaudiod; " +
+                            "sleep 2; " +
+                            "sudo renice 19 -p $(pgrep coreaudiod)\" " +
                             "user name \"" + usuario + "\" " +
                             "password \"" + senha + "\" " +
                             "with administrator privileges";
@@ -125,7 +132,9 @@ public class RepararAudioApp {
         try {
             String script =
                     "do shell script " +
-                            "\"killall coreaudiod\" " +
+                            "\"killall coreaudiod; " +
+                            "sleep 2; " +
+                            "renice 19 -p $(pgrep coreaudiod)\" " +
                             "with administrator privileges";
             ProcessBuilder pb =
                     new ProcessBuilder(
